@@ -1,6 +1,8 @@
 /x64
 /Media Pl.92ddf261
 /.vs
+/Debug
+
 *.vcxproj
 *.filters
 *.user
