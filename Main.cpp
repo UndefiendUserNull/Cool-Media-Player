@@ -43,22 +43,19 @@ std::string_view getStatusString(const sf::Music::Status& audio)
     }
 }
 
-std::string getViewTime(const sf::Time& time)
-{
-    return std::to_string((Utils::trunc_decs(time.asSeconds() / 120, 2))) + " \\ " + std::to_string(1);
-}
-
 void printCurrentAudioStatus(const sf::Music& audio)
 {
-    std::cout << '\n' << getStatusString(audio.getStatus()) << " " << getViewTime(audio.getDuration()) << '\n';
+    std::cout << '\n' << getStatusString(audio.getStatus()) << " " << Utils::formatTime(audio.getPlayingOffset().asSeconds()) << '\n';
 }
 
 int main()
 {
-    constexpr uint32_t windowWidth{640};
-    constexpr uint32_t windowHeight{480};
+    constexpr uint32_t windowWidth{1280};
+    constexpr uint32_t windowHeight{720};
 
     const sf::Vector2f screenCenter((float) windowWidth / 2, (float) windowHeight / 2);
+
+    std::string currentPlayingPath;
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Cool Media Player");
     window.setKeyRepeatEnabled(true);
@@ -82,13 +79,17 @@ int main()
 
 #pragma region Text Only
 
-    sf::Text text_audioDuration("0:00 / 3:29", mainFont);
+    sf::Text text_audioDuration("0:00", mainFont);
+    sf::Text text_volume("100", mainFont);
     sf::Text text_selectAudio("Choose A File", mainFont);
+    sf::Text text_currentPlaying("", mainFont);
+    setOriginToCenter(text_currentPlaying);
 
 #pragma endregion
 
     text_audioDuration.setPosition(sf::Vector2f(25, windowHeight / 1.1f));
-
+    text_volume.setPosition(sf::Vector2f(windowWidth / 1.2f, windowHeight / 1.1f));
+    text_currentPlaying.setPosition(windowWidth / 2, 10);
     setOriginToCenter(text_selectAudio);
     text_selectAudio.setPosition(screenCenter);
     followStatic(button_ChooseFile, text_selectAudio);
@@ -153,10 +154,8 @@ int main()
 
                         }
                         break;
-
-
-
                         break;
+
                     default:
                         break;
                 }
@@ -189,6 +188,9 @@ int main()
                         default:
                             break;
                     }
+
+                    break;
+                    break;
                 default:
                     break;
             }
@@ -208,23 +210,32 @@ int main()
 
         if (button_ChooseFileClicked && music.getStatus() != sf::Music::Playing && !currentLoaded)
         {
-            // const char* filters[] = {"*.mp3", "*.wav", "*.flac", "*.ogg", "*.aac"};
+            // const char* filters[] = .{"*.mp3", "*.wav", "*.flac", "*.ogg", "*.aac"};
             // std::string filePath{};
             // tinyfd_openFileDialog("Choose Audio File", "", 5, filters, "Audio Files (*.mp3;*.wav;*.flac;*.ogg;*.aac)", 0);
 
+            currentPlayingPath = "Frank Ocean - Self Control.mp3";
 
-            if (!music.openFromFile("Frank Ocean - Self Control.mp3"))
-                return -1;
+            if (!music.openFromFile(currentPlayingPath))
+                std::cerr << "Couldn't load file\n";
 
             std::cout << "Played\n";
             music.play();
+
             currentLoaded = true;
         }
 
         window.draw(button_ChooseFile);
 
+        text_audioDuration.setString(Utils::formatTime(music.getPlayingOffset().asSeconds()));
+        text_volume.setString("Volume : " + std::to_string((int) ceil(music.getVolume())));
+        text_currentPlaying.setString(currentPlayingPath);
+        setOriginToCenter(text_currentPlaying);
+
         window.draw(text_audioDuration);
         window.draw(text_selectAudio);
+        window.draw(text_volume);
+        window.draw(text_currentPlaying);
 
         if (isMouseOverChooseFile)
             button_ChooseFile.setFillColor(sf::Color::Green);

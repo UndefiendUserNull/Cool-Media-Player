@@ -1,17 +1,13 @@
 #pragma once
-
-// Stolen
+#include <string>
 
 namespace Utils
 {
-    template<typename T>
-    T trunc_decs(const T& f, int decs)
+    std::string formatTime(const float timeInSeconds)
     {
-        int i1 = floor(f);
-        T rmnd = f - i1;
-        int i2 = static_cast<int> (rmnd * pow(10, decs));
-        T f1 = i2 / pow(10, decs);
+        int mins{(int) floor(timeInSeconds / 60)};
+        int remSeconds = {(int) (floor(timeInSeconds)) % 60};
 
-        return i1 + f1;
+        return std::to_string(mins) + ":" + (remSeconds < 10 ? "0" : "") + std::to_string(remSeconds);
     }
 }
