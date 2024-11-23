@@ -210,16 +210,13 @@ int main()
 
         if (button_ChooseFileClicked && music.getStatus() != sf::Music::Playing && !currentLoaded)
         {
-            // const char* filters[] = .{"*.mp3", "*.wav", "*.flac", "*.ogg", "*.aac"};
-            // std::string filePath{};
-            // tinyfd_openFileDialog("Choose Audio File", "", 5, filters, "Audio Files (*.mp3;*.wav;*.flac;*.ogg;*.aac)", 0);
-
-            currentPlayingPath = "Frank Ocean - Self Control.mp3";
+            // Replace * with the audio file, audio file should be in the same folder as "main.cpp"
+            currentPlayingPath = "*.mp3";
 
             if (!music.openFromFile(currentPlayingPath))
                 std::cerr << "Couldn't load file\n";
 
-            std::cout << "Played\n";
+            std::cout << "Tried To Play\n";
             music.play();
 
             currentLoaded = true;
