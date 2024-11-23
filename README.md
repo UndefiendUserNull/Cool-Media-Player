@@ -23,3 +23,41 @@ Backward 1 second : Left Arrow
 Exit : Esc
 
 Show information : O
+
+# Dependencies ( Visual Studio 2022 Debug only )
+
+sfml-graphics-s-d.lib;
+
+sfml-window-s-d.lib;
+
+sfml-system-s-d.lib;
+
+sfml-audio-s-d.lib;
+
+%(AdditionalDependencies)
+
+opengl32.lib;
+
+winmm.lib;
+
+gdi32.lib;
+
+freetype.lib;
+
+comdlg32.lib;
+
+ole32.lib;
+
+openal32.lib;
+
+flac.lib;
+
+vorbisenc.lib;
+
+vorbisfile.lib;
+
+vorbis.lib;
+
+ogg.lib;
+
+**For the release remove the `-d` from anything above `%(AdditionalDependencies)`**
