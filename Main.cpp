@@ -224,7 +224,7 @@ int main()
 
         window.draw(button_ChooseFile);
 
-        text_audioDuration.setString(Utils::formatTime(music.getPlayingOffset().asSeconds()));
+        text_audioDuration.setString(Utils::formatTime(music.getPlayingOffset().asSeconds()) + " / " + Utils::formatTime(music.getDuration().asSeconds()));
         text_volume.setString("Volume : " + std::to_string((int) ceil(music.getVolume())));
         text_currentPlaying.setString(currentPlayingPath);
         setOriginToCenter(text_currentPlaying);

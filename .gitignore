@@ -6,6 +6,7 @@
 *.vcxproj
 *.filters
 *.user
+*.mp3
 
 tinyfiledialogs.c
 tinyfiledialogs.h
